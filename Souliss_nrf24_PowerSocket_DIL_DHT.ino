@@ -24,14 +24,7 @@
  **********************************************************************************/
 // Comment out the below lines to use the conf/QuickCfg.h method
 //
-#include "bconf/inSketch.h"
-
-#define BOARDTYPE_INSKETCH
-#define QC_BOARDTYPE                            0x46 // 0x46            Arduino with Nordic nRF24L01 or nRF24L01+
-
-// Either gateway and interface option aren't required
-#define GATEWAYTYPE_INSKETCH
-#define QC_GATEWAYTYPE                          0x00
+//Altezza LED 2,45mm
 
 #define	VNET_DEBUG_INSKETCH
 #define VNET_DEBUG  		1
@@ -39,13 +32,20 @@
 #define	MaCaco_DEBUG_INSKETCH
 #define MaCaco_DEBUG  		1
 
-// End of configuration block
+//--\conf\frame\vNetCfg.h
+#define	VNET_RESETTIME_INSKETCH
+#define VNET_RESETTIME		   0x85ED
 
-#include "Souliss.h"
-#include "SpeakEasy.h"
-#include "Typicals.h"
+// Configure the framework
+#include "bconf/StandardArduino.h"			// Use a standard Arduino
+#include "conf/nRF24L01.h"
+
+// Include framework code and libraries
 #include <SPI.h>
-#include <dht.h>
+#include "Souliss.h"
+#include "DHTlib\dht.h"
+
+// End of configuration block
 
 //Souliss Slot
 #define POWER_SOCKET	0
@@ -109,7 +109,7 @@ void loop(){
 			
 			//Check if joined and take control of the led
 			if (joined==1) {
-				if (Souliss_Output(memory_map, POWER_SOCKET)==1) {
+				if (mOutput(POWER_SOCKET)==1) {
 					digitalWrite(PIN_LED,HIGH);
 				} else {
 					digitalWrite(PIN_LED,LOW);
