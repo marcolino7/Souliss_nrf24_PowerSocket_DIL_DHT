@@ -67,6 +67,10 @@ byte joined = 0;
 #define network_my_subnet       0xFF00
 #define network_my_supern       0x6501        // RF24 gateway address
 
+//Funzione e variabile necessarie per il reset
+void(* resetFunc) (void) = 0; //declare reset function @ address 0
+U8 value_hold=0x068;
+
 
 // Identify the sensor, in case of more than one used on the same board	
 dht DHT;
@@ -102,6 +106,19 @@ void loop(){
 	EXECUTEFAST() {						
 		UPDATEFAST();
 		FAST_50ms() {	// We process the logic and relevant input and output every 50 milliseconds
+
+			//Gestisco la pressione Lunga o corta del bottone
+			uint8_t invalue = Souliss_DigInHold(PIN_BUTTON, Souliss_T1n_ToogleCmd, value_hold, memory_map, POWER_SOCKET, 5000);
+			if(invalue==Souliss_T1n_ToogleCmd){
+				Serial.println("TOGGLE");
+				mInput(POWER_SOCKET)=Souliss_T1n_ToogleCmd;
+			} else if(invalue==value_hold) {
+				// reset
+				Serial.println("REBOOT");
+				delay(1000);
+				resetFunc();
+			}
+
 			//Checking Pushbutton
 			Souliss_DigIn(PIN_BUTTON, Souliss_T1n_ToogleCmd, memory_map, POWER_SOCKET);
 			//Writing relè status
