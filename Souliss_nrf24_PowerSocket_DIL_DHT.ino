@@ -108,10 +108,10 @@ void loop(){
 		FAST_50ms() {	// We process the logic and relevant input and output every 50 milliseconds
 
 			//Gestisco la pressione Lunga o corta del bottone
-			uint8_t invalue = Souliss_DigInHold(PIN_BUTTON, Souliss_T1n_ToogleCmd, value_hold, memory_map, POWER_SOCKET, 5000);
-			if(invalue==Souliss_T1n_ToogleCmd){
+			uint8_t invalue = Souliss_DigInHold(PIN_BUTTON, Souliss_T1n_ToggleCmd, value_hold, memory_map, POWER_SOCKET, 5000);
+			if(invalue==Souliss_T1n_ToggleCmd){
 				Serial.println("TOGGLE");
-				mInput(POWER_SOCKET)=Souliss_T1n_ToogleCmd;
+				mInput(POWER_SOCKET)=Souliss_T1n_ToggleCmd;
 			} else if(invalue==value_hold) {
 				// reset
 				Serial.println("REBOOT");
@@ -120,7 +120,7 @@ void loop(){
 			}
 
 			//Checking Pushbutton
-			Souliss_DigIn(PIN_BUTTON, Souliss_T1n_ToogleCmd, memory_map, POWER_SOCKET);
+			Souliss_DigIn(PIN_BUTTON, Souliss_T1n_ToggleCmd, memory_map, POWER_SOCKET);
 			//Writing relè status
 			Souliss_DigOut(PIN_RELE, Souliss_T1n_Coil, memory_map, POWER_SOCKET);
 			
